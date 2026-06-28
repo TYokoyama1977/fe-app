@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "type": "text",
+    "question": "次のうち、偶数はどれ？",
+    "choices": ["3", "5", "8", "9"],
+    "answer": 2
+  },
+  {
+    "id": 2,
+    "type": "text",
+    "question": "日本の首都はどこ？",
+    "choices": ["大阪", "東京", "名古屋", "福岡"],
+    "answer": 1
+  },
+  {
+    "id": 3,
+    "type": "image",
+    "question": "circle.png",
+    "choices": ["三角形", "四角形", "円", "五角形"],
+    "answer": 2
+  }
+]
