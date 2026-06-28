@@ -19,11 +19,16 @@
   <script>
     async function loadQuestions() {
       try {
-        // ✅ GitHub Pages上の正しいパスに修正
+        // GitHub Pages の正しいパス（fe-app と同じ階層）
         const response = await fetch('./questions.json');
-        if (!response.ok) throw new Error('Failed to load questions.json');
+
+        if (!response.ok) {
+          throw new Error('Failed to load questions.json (HTTP ' + response.status + ')');
+        }
+
         const data = await response.json();
         return data;
+
       } catch (err) {
         alert('問題データの読み込みに失敗しました: ' + err.message);
         console.error(err);
@@ -40,14 +45,18 @@
 
       function showQuestion(q) {
         document.getElementById('question').textContent = q.question;
+
         const choicesDiv = document.getElementById('choices');
         choicesDiv.innerHTML = '';
+
         q.choices.forEach((choice, i) => {
           const btn = document.createElement('button');
           btn.textContent = choice;
           btn.className = 'choice';
+
           btn.onclick = () => {
             const result = document.getElementById('result');
+
             if (i === q.answer) {
               result.textContent = '正解！';
               result.style.color = 'green';
@@ -55,6 +64,7 @@
               result.textContent = '不正解…';
               result.style.color = 'red';
             }
+
             setTimeout(() => {
               current++;
               if (current < questions.length) {
@@ -67,6 +77,7 @@
               }
             }, 1000);
           };
+
           choicesDiv.appendChild(btn);
         });
       }
