@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>4択クイズ</title>
+<style>
+  #question { margin-bottom: 20px; font-size: 20px; }
+  #questionImage { max-width: 300px; display: none; margin-bottom: 20px; }
+  .choice { 
+    display: block; 
+    margin: 10px 0; 
+    padding: 10px; 
+    border: 1px solid #333; 
+    cursor: pointer; 
+    font-size: 18px;
+  }
+  #result { margin-top: 20px; font-size: 24px; }
+</style>
+</head>
+<body>
+
+<div id="question"></div>
+<img id="questionImage">
+<div id="choices"></div>
+<div id="result"></div>
+
+<script src="quiz.js"></script>
+</body>
+</html>
