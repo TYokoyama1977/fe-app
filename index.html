@@ -1,29 +1,78 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>4択クイズ</title>
-<style>
-  #question { margin-bottom: 20px; font-size: 20px; }
-  #questionImage { max-width: 300px; display: none; margin-bottom: 20px; }
-  .choice { 
-    display: block; 
-    margin: 10px 0; 
-    padding: 10px; 
-    border: 1px solid #333; 
-    cursor: pointer; 
-    font-size: 18px;
-  }
-  #result { margin-top: 20px; font-size: 24px; }
-</style>
+  <meta charset="UTF-8">
+  <title>4択クイズ</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin: 40px; }
+    #question { font-size: 1.4em; margin-bottom: 20px; }
+    .choice { display: block; margin: 10px auto; padding: 10px 20px; width: 60%; font-size: 1em; }
+    #result { font-size: 1.2em; margin-top: 20px; }
+  </style>
 </head>
 <body>
+  <h1>4択クイズ</h1>
+  <div id="question"></div>
+  <div id="choices"></div>
+  <div id="result"></div>
 
-<div id="question"></div>
-<img id="questionImage">
-<div id="choices"></div>
-<div id="result"></div>
+  <script>
+    async function loadQuestions() {
+      try {
+        // ✅ GitHub Pages上の正しいパスに修正
+        const response = await fetch('./questions.json');
+        if (!response.ok) throw new Error('Failed to load questions.json');
+        const data = await response.json();
+        return data;
+      } catch (err) {
+        alert('問題データの読み込みに失敗しました: ' + err.message);
+        console.error(err);
+        return [];
+      }
+    }
 
-<script src="quiz.js"></script>
+    async function startQuiz() {
+      const questions = await loadQuestions();
+      if (questions.length === 0) return;
+
+      let current = 0;
+      showQuestion(questions[current]);
+
+      function showQuestion(q) {
+        document.getElementById('question').textContent = q.question;
+        const choicesDiv = document.getElementById('choices');
+        choicesDiv.innerHTML = '';
+        q.choices.forEach((choice, i) => {
+          const btn = document.createElement('button');
+          btn.textContent = choice;
+          btn.className = 'choice';
+          btn.onclick = () => {
+            const result = document.getElementById('result');
+            if (i === q.answer) {
+              result.textContent = '正解！';
+              result.style.color = 'green';
+            } else {
+              result.textContent = '不正解…';
+              result.style.color = 'red';
+            }
+            setTimeout(() => {
+              current++;
+              if (current < questions.length) {
+                result.textContent = '';
+                showQuestion(questions[current]);
+              } else {
+                document.getElementById('question').textContent = '終了！';
+                choicesDiv.innerHTML = '';
+                result.textContent = 'お疲れさまでした！';
+              }
+            }, 1000);
+          };
+          choicesDiv.appendChild(btn);
+        });
+      }
+    }
+
+    startQuiz();
+  </script>
 </body>
 </html>
